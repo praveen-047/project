@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin: 20px 0;
+    font-size: 2.5rem;
+    animation: fadeIn 1s ease-out;
+}
+
+h2 {
+    color: #3498db;
+    text-align: center;
+    font-size: 2rem;
+    margin: 30px 0;
+    animation: fadeIn 1s ease-out;
+}
+
+/* Dashboard Container */
+.container {
+    width: 50%;
+    margin: 0 auto;
+}
+
+/* Section Styles */
+.dashboard-section {
+    margin-bottom: 40px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.data-table th, .data-table td {
+    padding: 12px 18px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.data-table th {
+    background-color: #3498db;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.data-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.data-table tr:hover {
+    background-color: #ecf0f1;
+}
+
+#rankingsChartContainer {
+    margin: 20px 0;
+    animation: fadeIn 1s ease-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Media Queries for Responsiveness */
+@media screen and (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, {{ session['username'] }} (Admin)</h1>
+        <div class="dashboard-section">
+            <h2>Teacher Rankings</h2>
+            <div id="rankingsChartContainer">
+                <canvas id="rankingsChart" width="400" height="200"></canvas>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Teacher</th>
+                        <th>Average Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for teacher, avg_rating in rankings %}
+                        <tr>
+                            <td>{{ teacher }}</td>
+                            <td>{{ avg_rating }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="dashboard-section">
+            <h2>All Feedback</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Teacher</th>
+                        <th>Question ID</th>
+                        <th>Rating</th>
+<!--                        <th>Sentiment</th>-->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for feedback in feedback %}
+                        <tr>
+                            <td>{{ feedback[1] }}</td>
+                            <td>{{ feedback[2] }}</td>
+                            <td>{{ feedback[3] }}</td>
+<!--                            <td>{{ feedback[4] }}</td>-->
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const rankingsData = {
+            labels: [{% for teacher, _ in rankings %}"{{ teacher }}",{% endfor %}],
+            datasets: [{
+                label: 'Teacher Ratings',
+                data: [{% for _, avg_rating in rankings %}{{ avg_rating }},{% endfor %}],
+                backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                borderColor: 'rgba(52, 152, 219, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        const ctx = document.getElementById('rankingsChart').getContext('2d');
+        const rankingsChart = new Chart(ctx, {
+            type: 'bar',
+            data: rankingsData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 5
+                    }
+                },
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

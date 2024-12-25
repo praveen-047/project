@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #9face6);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2rem;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        form {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px 40px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            animation: slideIn 1.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        h3 {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            color: #fff;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 5px #fff, 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        button {
+            background: #74ebd5;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background: #9face6;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        p {
+            text-align: center;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        a {
+            color: #fff;
+            font-weight: bold;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #74ebd5;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Floating dots background */
+        .dots {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .dots span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            animation: move 5s infinite linear;
+            border-radius: 50%;
+        }
+
+        @keyframes move {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+            100% {
+                transform: translateY(500px) translateX(200px);
+            }
+        }
+
+        /* Create different sizes and speeds for dots */
+        .dots span:nth-child(1) { left: 20%; animation-duration: 6s; }
+        .dots span:nth-child(2) { left: 40%; animation-duration: 8s; }
+        .dots span:nth-child(3) { left: 60%; animation-duration: 10s; }
+        .dots span:nth-child(4) { left: 80%; animation-duration: 12s; }
+        .dots span:nth-child(5) { left: 50%; animation-duration: 14s; }
+    </style>
+</head>
+<body>
+    <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <h2>Welcome to the Feedback Portal</h2>
+
+    <div class="form-container">
+        <!-- Student Login Form -->
+        <form action="/login" method="post">
+            <h3>Student Login</h3>
+            <label>Email:</label>
+            <input type="email" name="email" required>
+            <label>Password:</label>
+            <input type="password" name="password" required>
+            <button type="submit">Login as Student</button>
+        </form>
+
+        <!-- Admin Login Form -->
+        <form action="/login" method="post">
+            <h3>Admin Login</h3>
+            <label>Email:</label>
+            <input type="email" name="email" required>
+            <label>Password:</label>
+            <input type="password" name="password" required>
+            <button type="submit">Login as Admin</button>
+        </form>
+    </div>
+
+    <p>Not a user? <a href="{{ url_for('register') }}">Register as Student</a></p>
+</body>
+</html>

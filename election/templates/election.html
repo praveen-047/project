@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Election Sentiment Prediction</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Reset */
+        body, h1, h2, p {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            background: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            padding: 0 1rem;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: #ffffff;
+            color: #4f6d7a;
+            padding: 2rem 0;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            border-bottom: 2px solid #e1e6f0;
+            animation: slideIn 1s ease-out;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #56ccf2;
+            letter-spacing: 1px;
+        }
+
+        /* Main Section */
+        main {
+            padding: 2rem;
+            margin-top: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Form Section */
+        #input-section {
+            background: #ffffff;
+            margin: 1rem auto;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 700px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        #input-section h2 {
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            color: #4f6d7a;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+
+        form label {
+            display: block;
+            margin-top: 1rem;
+            font-weight: 600;
+            color: red;
+            transition: color 0.3s ease;
+        }
+
+        form input, form button {
+            width: 100%;
+            padding: 0.8rem;
+            margin-top: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #f9f9f9;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+        form input:focus, form button:focus {
+            outline: none;
+            border-color: #56ccf2;
+            background-color: #eaffff;
+        }
+
+        form button {
+            background: #56ccf2;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+            border: none;
+            transition: background 0.3s, transform 0.3s ease;
+        }
+
+        form button:hover {
+            background: #3a94c1;
+            transform: translateY(-3px);
+        }
+
+        /* Results Section */
+        #results-section {
+            background: #ffffff;
+            margin: 1rem auto;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 700px;
+            text-align: center;
+            display: none;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        /* Updated charts container */
+      #charts {
+    display: flex;
+    justify-content: space-between; /* Keep charts side by side */
+    flex-wrap: nowrap; /* Prevent the charts from wrapping */
+    margin: 2rem 0;
+}
+
+canvas {
+    flex: 1; /* Allow the canvas to grow and take up equal space */
+    height: 300px;
+    margin: 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background: #f9f9f9;
+    max-width: 48%; /* Prevent the canvas from stretching beyond the container */
+}
+
+        /* Animation */
+        @keyframes slideIn {
+            0% {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Loading Animation */
+        .loading-spinner {
+            display: inline-block;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #56ccf2;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #charts {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            canvas {
+                max-width: 80%;
+                height: auto;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            form button {
+                width: 100%;
+            }
+
+            #input-section, #results-section {
+                width: 90%;
+            }
+        }
+
+        /* Text Section */
+        #summary {
+            color: #4f6d7a;
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        #sentiment-scores {
+            color: #56ccf2;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Election Sentiment Analysis</h1>
+    </header>
+
+    <main class="main">
+        <div id="input-section">
+            <h2>Enter Election Details</h2>
+            <form id="prediction-form">
+                <label for="party1">Party 1:</label>
+                <input type="text" id="party1" name="party1" required><br><br>
+
+                <label for="party2">Party 2:</label>
+                <input type="text" id="party2" name="party2" required><br><br>
+
+                <label for="subreddit">Subreddit (default: news):</label>
+                <input type="text" id="subreddit" name="subreddit"><br><br>
+
+                <label for="comment-limit">Number of Comments (default: 100):</label>
+                <input type="number" id="comment-limit" name="limit"><br><br>
+
+                <button type="submit">Analyze Sentiment</button>
+            </form>
+        </div>
+
+        <div id="results-section">
+            <h2>Results</h2>
+            <div id="charts">
+                <canvas id="chart-party1"></canvas>
+                <canvas id="chart-party2"></canvas>
+            </div>
+            <div id="summary"></div>
+            <div id="sentiment-scores"></div>
+        </div>
+    </main>
+
+    <script src="../static/election.js"></script>
+</body>
+</html>

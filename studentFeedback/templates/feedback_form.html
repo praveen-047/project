@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Feedback</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Teacher Feedback Form</h1>
+    <form id="feedbackForm" action="/submit_feedback" method="POST">
+        <!-- Teacher Dropdown -->
+        <label for="teacher">Select Teacher:</label>
+        <select id="teacher" name="teacher" required>
+            <option value="Teacher A">Teacher A</option>
+            <option value="Teacher B">Teacher B</option>
+            <option value="Teacher C">Teacher C</option>
+            <option value="Teacher D">Teacher D</option>
+            <option value="Teacher E">Teacher E</option>
+            <option value="Teacher F">Teacher F</option>
+        </select>
+
+        <!-- Feedback Questions in a Table -->
+        <table id="feedbackQuestions" cellpadding="10">
+            <tr>
+                <th>Question</th>
+                <th>Rating</th>
+            </tr>
+            <tr>
+                <td>1. Has the Teacher covered entire Syllabus as prescribed by University / College / Board?</td>
+                <td>
+                    <div class="stars" data-question="1">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>2. Has the Teacher covered relevant topics beyond syllabus?</td>
+                <td>
+                    <div class="stars" data-question="2">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>3. Technical content/course content</td>
+                <td>
+                    <div class="stars" data-question="3">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>4. Communication skills</td>
+                <td>
+                    <div class="stars" data-question="4">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>5. Pace at which contents were covered</td>
+                <td>
+                    <div class="stars" data-question="5">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>6. Motivation and inspiration for students to learn</td>
+                <td>
+                    <div class="stars" data-question="6">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>7. Support for the development of students' skills</td>
+                <td>
+                    <div class="stars" data-question="7">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
